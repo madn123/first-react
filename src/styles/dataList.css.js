@@ -28,6 +28,7 @@ const css = {
         position: relative;
         width: ${props => props.width};
         font-size: 14px;
+        color: ${props => props.$color};
     `,
     ButtonsLine: styled.div`
         display: flex;
@@ -46,7 +47,7 @@ const css = {
         color: gray;
         margin-right: 40px;
         cursor: pointer;
-        font-weight: ${props => props.isBold ? 'bold' : 'normal'};
+        font-weight: ${props => props.$isBold ? 'bold' : 'normal'};
     `
 }
 

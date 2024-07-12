@@ -15,22 +15,19 @@ const Header = () => {
                 <HeaderCSS.Logo>Finnmanager</HeaderCSS.Logo>
                 <HeaderCSS.MenuContainer>
                     <HOCButtonComponent 
-                        text={'/main'} 
-                        onClick={() => console.log('main')}
+                        text={'/main'}
                     >
                         Главная
                     </HOCButtonComponent>
 
                     <HOCButtonComponent 
-                        text={'/stat/расход'} 
-                        onClick={() => console.log('stat/расход')}
+                        text={'/stat/расход'}
                     >
                         Статистика
                     </HOCButtonComponent>
 
                     <HOCButtonComponent 
-                        text={'/plan'} 
-                        onClick={() => console.log('plan')}
+                        text={'/plan'}
                     >
                         Планирование
                     </HOCButtonComponent>

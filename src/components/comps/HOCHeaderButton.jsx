@@ -9,7 +9,6 @@ const HOCButton = (ButtonComponent) => {
 
         const onClick = () => {
             navigate(props.text);
-            props.onClick();
         }
 
         return <ButtonComponent {...props} onClick={onClick}/>

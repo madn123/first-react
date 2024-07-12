@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setData as setDataRedux } from './redux-state/reducers/data';
+import { setData as setDataRedux, updateComputed } from './redux-state/reducers/data';
 import {Routes, Route} from 'react-router-dom';
 import Header from './components/views/global/Header'
 import Footer from './components/views/global/Footer';
@@ -16,12 +16,16 @@ const {Container} = css;
 function App() {
   const dispatch = useDispatch();
   const data = useSelector(state => state.dataReducer.data);
+  const computedData = useSelector(state => state.dataReducer.computed);
+  console.log(data);
+  console.log(computedData);
 
   const [footerText, setFooterText] = useState('Kurs po React!');
 
-  const setData = (param) => dispatch(setDataRedux(param));
-
-  useEffect(() => console.log(data), [data]);
+  const setData = (param) => {
+    dispatch(setDataRedux(param));
+    dispatch(updateComputed(param));
+  };
 
   return (
     <>
@@ -34,7 +38,7 @@ function App() {
           />
           <Route
             path={'/stat/:viewType'}
-            element={<Stat statData={data}/>}
+            element={<Stat statData={data} computedData={computedData}/>}
           />
           <Route
             path={'/plan/'}

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { changeViewType, changeValue, changeComment } from '../../redux-state/reducers/view-type-for-main';
+import { changeViewType, changeValue, changeComment } from '../../redux-state/reducers/viewType';
 import { useSelector, useDispatch } from 'react-redux';
 import InputComponent from '../comps/Input';
 import Radio from '@mui/material/Radio';
@@ -10,31 +10,24 @@ import FormLabel from '@mui/material/FormLabel';
 import css from '../../styles/form.css';
 
 import {useRef} from 'react';
-// import { Button } from '@mui/material';
-import useNumberFormat from '../../hooks/useNumberFormat';
 
 const { FormContainer, Button, Input } = css;
 
 const Main = (props) => {
     const {action} = props;
-
     const valueInput = useRef();
-    const [formatValue, formating] = useNumberFormat();
 
     const dispatch = useDispatch();
     const viewType = useSelector(state => state.viewTypeMain.viewType);
     const viewValue = useSelector(state => state.viewTypeMain.value);
     const viewComment = useSelector(state => state.viewTypeMain.comment);
-
+    
     const validation = () => {
-        console.log(formatValue);
-        if (formatValue.length > 2 && viewType ) {
-            const dataLine = `${formatValue}::${viewType}::${viewComment}`;
-
-            action(dataLine);
+        if (viewValue.length > 2 && viewType ) {
+            action({viewType:viewType, viewValue:+viewValue, viewComment:viewComment});
 
             dispatch(changeValue(''));
-            dispatch(changeViewType('доход'));
+            dispatch(changeViewType('расход'));
             dispatch(changeComment(''));
         } else {
             console.log('Error');
@@ -57,11 +50,6 @@ const Main = (props) => {
         dispatch(changeComment(event.target.value));
     }
 
-    const setFocus = () => {
-        valueInput.current.disabled = false;
-        valueInput.current.focus();
-    }
-
     return (
         <>
             <FormContainer>
@@ -73,7 +61,6 @@ const Main = (props) => {
                     maxLength={'100'}
                     onChange={event => {
                         const newValue = event.target.value;
-                        formating(newValue);
                         handleChangeValue(newValue);
                     }}
                 />

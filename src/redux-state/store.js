@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import viewTypeMainReducer from './reducers/view-type-for-main';
+import viewTypeMainReducer from './reducers/viewType';
 import dataReducer from './reducers/data';
 
 export const store = configureStore({
