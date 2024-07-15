@@ -11,14 +11,12 @@ import FooterContext from './redux-state/context/footerContext';
 
 import css from './styles/styles.css'
 
-const {Container} = css;
+const {Wrapper, Container} = css;
 
 function App() {
   const dispatch = useDispatch();
   const data = useSelector(state => state.dataReducer.data);
   const computedData = useSelector(state => state.dataReducer.computed);
-  console.log(data);
-  console.log(computedData);
 
   const [footerText, setFooterText] = useState('Kurs po React!');
 
@@ -28,7 +26,7 @@ function App() {
   };
 
   return (
-    <>
+    <Wrapper>
       <Header></Header>
       <Container>
         <Routes>
@@ -57,7 +55,7 @@ function App() {
         </FooterContext.Consumer> */}
         <Footer/>
       </FooterContext.Provider>
-    </>
+    </Wrapper>
   );
 }
 

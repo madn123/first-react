@@ -39,7 +39,11 @@ const css = {
         `
     },
     Container: styled.div`
-        min-height: 570px;
+        min-height: calc(100vh - 160px);
+    `,
+    Wrapper: styled.div`
+        display: flex;
+        flex-direction: column;
     `
 }
 

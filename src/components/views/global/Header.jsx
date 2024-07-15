@@ -3,7 +3,6 @@ import css from '../../../styles/styles.css';
 import HOCButton from '../../comps/HOCHeaderButton';
 import Button from '../../comps/Button';
 
-
 const HOCButtonComponent = HOCButton(Button);
 
 const {HeaderContainer, HeaderCSS} = css;
@@ -21,7 +20,7 @@ const Header = () => {
                     </HOCButtonComponent>
 
                     <HOCButtonComponent 
-                        text={'/stat/расход'}
+                        text={'/stat/all'}
                     >
                         Статистика
                     </HOCButtonComponent>

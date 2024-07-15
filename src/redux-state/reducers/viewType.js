@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    viewType: 'расход',
+    viewType: 'expense',
     value: '',
     comment: ''
 }

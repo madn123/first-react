@@ -16,7 +16,7 @@ export const dataReducer = createSlice({
         updateComputed: (state, action) => {
             const {viewType, viewValue, viewComment} = action.payload;
 
-            if(viewType === 'доход') {
+            if(viewType === 'income') {
                 return;
             }
 

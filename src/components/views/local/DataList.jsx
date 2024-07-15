@@ -1,15 +1,17 @@
 import React, {useMemo} from 'react';
 import {useNavigate} from 'react-router-dom';
 import css from '../../../styles/dataList.css';
+import mainTypes from '../../../constants/mainTypes';
+import {getNameOfType} from '../../../helpers/functions';
 
 const {DataContainer, ContentLine, ContentCell, ButtonsLine, ButtonItem} = css;
 
 const dataSum = (paramData, view) => {
     let result = [];
 
-    if (view === 'общее') {
+    if (view === 'all') {
         result = paramData.reduce((sum, item) => {
-            if (item.viewType === 'доход') {
+            if (item.viewType === 'income') {
                 return sum + +item.viewValue;
             } else {
                 return sum - +item.viewValue;
@@ -27,23 +29,23 @@ const dataSum = (paramData, view) => {
 const DataList = (props) => {
     const {data = [], setShow, viewType} = props;
     const navigate = useNavigate();
-    const filterData = viewType == 'общее' ? data : data.filter(item => item.viewType === viewType);
+    const filterData = viewType == 'all' ? data : data.filter(item => item.viewType === viewType);
     const filterDataSum = useMemo(() => dataSum(filterData, viewType), [filterData, viewType]);
     
     const reduceDataType = (type) => {
         navigate('/stat/' + type);
-        type === 'расход' ? setShow(true) : setShow(false);
+        type === 'expense' ? setShow(true) : setShow(false);
     }
 
     const getColor = () => {
         switch (viewType) {
-            case 'доход':
+            case 'income':
                 return 'green';
         
-            case 'расход':
+            case 'expense':
                 return 'red';
 
-            case 'общее':
+            case 'all':
                 return filterDataSum >= 0 ? 'green' : 'red';
         }
 
@@ -53,9 +55,11 @@ const DataList = (props) => {
     return (
         <>
             <ButtonsLine>
-                <ButtonItem $isBold={viewType === 'доход'} onClick={() => reduceDataType('доход')}>доходы</ButtonItem>
-                <ButtonItem $isBold={viewType === 'расход'} onClick={() => reduceDataType('расход')}>расходы</ButtonItem>
-                <ButtonItem $isBold={viewType === 'общее'} onClick={() => reduceDataType('общее')}>общее</ButtonItem>
+                { mainTypes.map((item, index) => {
+                    return (
+                        <ButtonItem  key={index} $isBold={viewType === item.id} onClick={() => reduceDataType(item.id)}>{item.value}</ButtonItem>
+                    )
+                })}
             </ButtonsLine>
             
             <DataContainer>
@@ -63,21 +67,21 @@ const DataList = (props) => {
                     { filterData.map((item, index) => {
                         return (
                             <ContentLine key={index}>
-                                <ContentCell $color={item.viewType === 'доход' ? 'green' : 'red'} width={'20%'}>{item.viewValue}</ContentCell>
-                                <ContentCell width={'20%'}>{item.viewType}</ContentCell>
+                                <ContentCell $color={item.viewType === 'income' ? 'green' : 'red'} width={'20%'}>{item.viewValue.toLocaleString('ru-RU')} ₽</ContentCell>
+                                <ContentCell width={'20%'}>{getNameOfType(item.viewType)}</ContentCell>
                                 <ContentCell width={'60%'}>{item.viewComment}</ContentCell>
                             </ContentLine>
                         )
                     })}
 
                     <ContentLine>
-                        <ContentCell $color={getColor} width={'20%'}>{filterDataSum}</ContentCell>
+                        <ContentCell $color={getColor} width={'20%'}>{filterDataSum.toLocaleString('ru-RU')} ₽</ContentCell>
                         <ContentCell width={'20%'}>-</ContentCell>
                         <ContentCell width={'60%'}>-</ContentCell>
                     </ContentLine>
                 </> } 
                 { filterData.length === 0 && <>
-                    <div>По разделу <b>{viewType}</b> данных нет</div>
+                    <div>По разделу <b>"{getNameOfType(viewType)}"</b> данных нет</div>
                 </> } 
             </DataContainer>
         </>
