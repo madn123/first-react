@@ -1,17 +1,29 @@
-import React from 'react';
-import DataList from '../views/local/DataList';
+import React, { useState, useEffect } from 'react';
+import UserCard from '../views/local/UserCard';
+import css from '../../styles/users.css';
 
-export default class Plan extends React.Component {
-    constructor(props) {
-        super(props);
+const { List } = css;
 
+const Plan = (props) => {
+    const [users, setUsers] = useState([]);
+
+    const fetchUsers = () => {
+        fetch('https://jsonplaceholder.typicode.com/users')
+        .then(response => response.json())
+        .then(json => setUsers(json))
     }
 
-    render() {
-        return (
-            <>
-                <DataList viewType={'расход'} data={this.props.statData} />
-            </>
-        )
-    }
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    return (
+        <List>
+            {users.map((user) => {
+                return <UserCard user={user}/>
+            })}
+        </List>
+    )
 }
+
+export default Plan;
