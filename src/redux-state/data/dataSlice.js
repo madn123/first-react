@@ -2,18 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 import expenseTypes from '../../constants/expenseTypes';
 
 const initialState = {
-    data: [],
+    all: [],
     computed: [],
 }
 
 export const dataReducer = createSlice({
-    name: 'dataReducer',
+    name: 'data',
     initialState,
     reducers: {
         setData: (state, action) => {
-            state.data.push(action.payload);
-        },
-        updateComputed: (state, action) => {
+            state.all.push(action.payload);
+
             const {viewType, viewValue, viewComment} = action.payload;
 
             if(viewType === 'income') {

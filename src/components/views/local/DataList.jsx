@@ -1,63 +1,36 @@
-import React, {useMemo} from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import css from '../../../styles/dataList.css';
 import mainTypes from '../../../constants/mainTypes';
-import {getNameOfType} from '../../../helpers/functions';
+import {getNameOfType, getColor} from '../../../helpers/functions';
+import { changeType } from '../../../redux-state/data/typeSlice';
+import { selectDataByType, selectDataSum, selectActiveType } from '../../../redux-state/data/selectors';
 
 const {DataContainer, ContentLine, ContentCell, ButtonsLine, ButtonItem} = css;
 
-const dataSum = (paramData, view) => {
-    let result = [];
-
-    if (view === 'all') {
-        result = paramData.reduce((sum, item) => {
-            if (item.viewType === 'income') {
-                return sum + +item.viewValue;
-            } else {
-                return sum - +item.viewValue;
-            }  
-        }, 0);
-    } else {
-        result = paramData.reduce((sum, item) => {
-            return sum + +item.viewValue;
-        }, 0);
-    }
-   
-    return result;
-}
-
 const DataList = (props) => {
-    const {data = [], setShow, viewType} = props;
+    const {setShow} = props;
     const navigate = useNavigate();
-    const filterData = viewType == 'all' ? data : data.filter(item => item.viewType === viewType);
-    const filterDataSum = useMemo(() => dataSum(filterData, viewType), [filterData, viewType]);
+    const dispatch = useDispatch();
+    // const {filterData, filterDataSum} = useSelector(selectSum(viewType));
+
+    const viewType = useSelector(selectActiveType);
+    const filterData = useSelector(selectDataByType);
+    const filterDataSum = useSelector(selectDataSum);
     
-    const reduceDataType = (type) => {
+    const handleCLick = (type) => {
         navigate('/stat/' + type);
         type === 'expense' ? setShow(true) : setShow(false);
+        dispatch(changeType(type));
     }
-
-    const getColor = () => {
-        switch (viewType) {
-            case 'income':
-                return 'green';
-        
-            case 'expense':
-                return 'red';
-
-            case 'all':
-                return filterDataSum >= 0 ? 'green' : 'red';
-        }
-
-        return 'gray';
-    };
 
     return (
         <>
             <ButtonsLine>
                 { mainTypes.map((item, index) => {
                     return (
-                        <ButtonItem  key={index} $isBold={viewType === item.id} onClick={() => reduceDataType(item.id)}>{item.value}</ButtonItem>
+                        <ButtonItem  key={index} $isBold={viewType === item.id} onClick={() => handleCLick(item.id)}>{item.value}</ButtonItem>
                     )
                 })}
             </ButtonsLine>
@@ -75,7 +48,7 @@ const DataList = (props) => {
                     })}
 
                     <ContentLine>
-                        <ContentCell $color={getColor} width={'20%'}>{filterDataSum.toLocaleString('ru-RU')} ₽</ContentCell>
+                        <ContentCell $color={getColor(viewType, filterDataSum)} width={'20%'}>{filterDataSum.toLocaleString('ru-RU')} ₽</ContentCell>
                         <ContentCell width={'20%'}>-</ContentCell>
                         <ContentCell width={'60%'}>-</ContentCell>
                     </ContentLine>

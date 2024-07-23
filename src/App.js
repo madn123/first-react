@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setData as setDataRedux, updateComputed } from './redux-state/reducers/data';
+import { setData as setDataRedux } from './redux-state/data/dataSlice';
 import {Routes, Route} from 'react-router-dom';
 import Header from './components/views/global/Header'
 import Footer from './components/views/global/Footer';
 import Main from './components/pages/Main';
 import Stat from './components/pages/Stat';
-import Plan from './components/pages/Plan';
+import User from './components/pages/User';
 import FooterContext from './redux-state/context/footerContext';
+import { selectComputedData, selectAllData } from './redux-state/data/selectors';
 
 import css from './styles/styles.css'
 
@@ -15,14 +16,13 @@ const {Wrapper, Container} = css;
 
 function App() {
   const dispatch = useDispatch();
-  const data = useSelector(state => state.dataReducer.data);
-  const computedData = useSelector(state => state.dataReducer.computed);
+  const data = useSelector(selectAllData);
+  const computedData = useSelector(selectComputedData);
 
   const [footerText, setFooterText] = useState('Kurs po React!');
 
   const setData = (param) => {
     dispatch(setDataRedux(param));
-    dispatch(updateComputed(param));
   };
 
   return (
@@ -39,8 +39,8 @@ function App() {
             element={<Stat statData={data} computedData={computedData}/>}
           />
           <Route
-            path={'/plan/'}
-            element={<Plan statData={data}/>}
+            path={'/user/'}
+            element={<User statData={data}/>}
           />
           <Route
             path={'*'}

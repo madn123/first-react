@@ -26,9 +26,9 @@ const Header = () => {
                     </HOCButtonComponent>
 
                     <HOCButtonComponent 
-                        text={'/plan'}
+                        text={'/user'}
                     >
-                        Планирование
+                        Пользователи
                     </HOCButtonComponent>
                 </HeaderCSS.MenuContainer>
             </HeaderContainer>

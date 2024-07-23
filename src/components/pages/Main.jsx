@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import { changeViewType, changeValue, changeComment } from '../../redux-state/reducers/viewType';
+import { changeValue } from '../../redux-state/data/transactionSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import InputComponent from '../comps/Input';
 import Radio from '@mui/material/Radio';
@@ -9,8 +9,10 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import css from '../../styles/form.css';
 import setNotification from '../../helpers/notifications';
+import { getNameOfType } from '../../helpers/functions';
 import expenseTypes from '../../constants/expenseTypes';
 import mainTypes from '../../constants/mainTypes';
+import { selectTransactionType, selectTransactionValue, selectTransactionComment } from '../../redux-state/data/selectors';
 
 
 const { FormContainer, Button, Input } = css;
@@ -20,9 +22,9 @@ const Main = (props) => {
     const valueInput = useRef();
 
     const dispatch = useDispatch();
-    const viewType = useSelector(state => state.viewTypeMain.viewType);
-    const viewValue = useSelector(state => state.viewTypeMain.value);
-    const viewComment = useSelector(state => state.viewTypeMain.comment);
+    const viewType = useSelector(selectTransactionType);
+    const viewValue = useSelector(selectTransactionValue);
+    const viewComment = useSelector(selectTransactionComment);
     
     const validation = () => {
         if (viewValue.length === 0) {
@@ -36,28 +38,28 @@ const Main = (props) => {
         } 
 
         action({viewType:viewType, viewValue:+viewValue, viewComment:viewComment});
-        setNotification({message:`Добавлен ${viewType} ${viewComment} в размере ${viewValue} руб`, type:'success'});
+        setNotification({message:`Добавлен ${getNameOfType(viewType)} ${viewComment} в размере ${viewValue} руб`, type:'success'});
 
-        dispatch(changeValue(''));
-        dispatch(changeViewType('expense'));
-        dispatch(changeComment(''));
+        dispatch(changeValue({key:'value', value:''}));
+        dispatch(changeValue({key:'type', value:'expense'}));
+        dispatch(changeValue({key:'comment', value:''}));
     }
 
     const handleChange = (event) => {
-        dispatch(changeViewType(event.target.value));
-        dispatch(changeComment(''));
+        dispatch(changeValue({key:'type', value:event.target.value}));
+        dispatch(changeValue({key:'comment', value:''}));
     }
 
     const handleChangeValue = (param) => {
-        dispatch(changeValue(param));
+        dispatch(changeValue({key:'value', value:param}));
     }
 
     const handleChangeComment = (param) => {
-        dispatch(changeComment(param));
+        dispatch(changeValue({key:'comment', value:param}));
     }
 
     const handleChangeCommentRadio = (event) => {
-        dispatch(changeComment(event.target.value));
+        dispatch(changeValue({key:'comment', value:event.target.value}));
     }
 
     return (

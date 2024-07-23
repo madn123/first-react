@@ -11,7 +11,7 @@ const Stat = (props) => {
 
     return (
         <>
-            <DataList viewType={viewType} setShow={setIsShowChart} data={statData} />
+            <DataList setShow={setIsShowChart} />
             <DataChart viewType={viewType} show={isShowChart} data={computedData} />
         </>
     )
