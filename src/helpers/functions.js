@@ -1,3 +1,4 @@
+
 import mainTypes from '../constants/mainTypes';
 
 const getNameOfType = (typeId) => {

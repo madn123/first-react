@@ -6,7 +6,6 @@ const buttonCss = {
     borderRadius: '6px',
     backgroundColor: '#b0f347',
     cursor: 'pointer',
-    marginLeft: '10px',
     textDecoration: 'none',
     color: 'inherit'
 }

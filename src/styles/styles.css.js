@@ -3,10 +3,9 @@ import styled from "styled-components";
 
 const css = {
     HeaderContainer: styled.header`
-        display: flex;
-        flex-direction: row;
+        display: grid;
         align-items: center;
-        justify-content: space-between;
+        grid-template-columns: repeat(3, 1fr);
         position: relative;
         width: 100%;
         height: 80px;
@@ -22,7 +21,6 @@ const css = {
         width: 100%;
         height: 80px;
         background-color: #e5e5e5;
-        /* position: absolute; */
         bottom: 0;
     `,
     HeaderCSS: {
@@ -36,6 +34,16 @@ const css = {
             align-items: center;
             justify-content: flex-start;
             position: relative;
+            gap: 15px;
+        `,
+        PersonalContainer: styled.div`
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+            font-weight: 600;
+            min-width: 300px;
+            margin-left: auto;
         `
     },
     Container: styled.div`

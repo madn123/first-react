@@ -16,8 +16,8 @@ const css = {
         gap: 10px;
     `,
     ContentLine: styled.div`
-        display: flex;
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
         align-items: center;
         justify-content: flex-start;
         position: relative;

@@ -5,7 +5,7 @@ import css from '../../../styles/dataList.css';
 import mainTypes from '../../../constants/mainTypes';
 import {getNameOfType, getColor} from '../../../helpers/functions';
 import { changeType } from '../../../redux-state/data/typeSlice';
-import { selectDataByType, selectDataSum, selectActiveType } from '../../../redux-state/data/selectors';
+import { selectDataByFilter, selectDataSum, selectActiveType, selectUsers  } from '../../../redux-state/data/selectors';
 
 const {DataContainer, ContentLine, ContentCell, ButtonsLine, ButtonItem} = css;
 
@@ -16,13 +16,20 @@ const DataList = (props) => {
     // const {filterData, filterDataSum} = useSelector(selectSum(viewType));
 
     const viewType = useSelector(selectActiveType);
-    const filterData = useSelector(selectDataByType);
+    const filterData = useSelector(selectDataByFilter);
     const filterDataSum = useSelector(selectDataSum);
+
+    const userState = useSelector(selectUsers);
     
     const handleCLick = (type) => {
         navigate('/stat/' + type);
         type === 'expense' ? setShow(true) : setShow(false);
         dispatch(changeType(type));
+    }
+
+    const getUserName = (userId) => {
+        const user = userState.users.find(user => user.id === userId);
+        return user ? user.name : 'Неизвестный пользователь';
     }
 
     return (
@@ -37,20 +44,29 @@ const DataList = (props) => {
             
             <DataContainer>
                 { filterData.length > 0 && <>
+                    <ContentLine style={{fontWeight: '600'}}>
+                        <ContentCell>Сумма</ContentCell>
+                        <ContentCell>Тип транзакции</ContentCell>
+                        <ContentCell>Комментарий</ContentCell>
+                        <ContentCell>Пользователь</ContentCell>
+                    </ContentLine>
+
                     { filterData.map((item, index) => {
                         return (
                             <ContentLine key={index}>
-                                <ContentCell $color={item.viewType === 'income' ? 'green' : 'red'} width={'20%'}>{item.viewValue.toLocaleString('ru-RU')} ₽</ContentCell>
-                                <ContentCell width={'20%'}>{getNameOfType(item.viewType)}</ContentCell>
-                                <ContentCell width={'60%'}>{item.viewComment}</ContentCell>
+                                <ContentCell $color={item.viewType === 'income' ? 'green' : 'red'}>{item.viewValue.toLocaleString('ru-RU')} ₽</ContentCell>
+                                <ContentCell>{getNameOfType(item.viewType)}</ContentCell>
+                                <ContentCell>{item.viewComment}</ContentCell>
+                                <ContentCell>{getUserName(item.userId)}</ContentCell>
                             </ContentLine>
                         )
                     })}
 
                     <ContentLine>
-                        <ContentCell $color={getColor(viewType, filterDataSum)} width={'20%'}>{filterDataSum.toLocaleString('ru-RU')} ₽</ContentCell>
-                        <ContentCell width={'20%'}>-</ContentCell>
-                        <ContentCell width={'60%'}>-</ContentCell>
+                        <ContentCell $color={getColor(viewType, filterDataSum)}>{filterDataSum.toLocaleString('ru-RU')} ₽</ContentCell>
+                        <ContentCell>-</ContentCell>
+                        <ContentCell>-</ContentCell>
+                        <ContentCell>-</ContentCell>
                     </ContentLine>
                 </> } 
                 { filterData.length === 0 && <>

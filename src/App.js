@@ -7,8 +7,9 @@ import Footer from './components/views/global/Footer';
 import Main from './components/pages/Main';
 import Stat from './components/pages/Stat';
 import User from './components/pages/User';
+import Auth from './components/pages/Auth';
 import FooterContext from './redux-state/context/footerContext';
-import { selectComputedData, selectAllData } from './redux-state/data/selectors';
+import { selectUser } from './redux-state/data/selectors';
 
 import css from './styles/styles.css'
 
@@ -16,10 +17,10 @@ const {Wrapper, Container} = css;
 
 function App() {
   const dispatch = useDispatch();
-  const data = useSelector(selectAllData);
-  const computedData = useSelector(selectComputedData);
 
   const [footerText, setFooterText] = useState('Kurs po React!');
+
+  const user = useSelector(selectUser);
 
   const setData = (param) => {
     dispatch(setDataRedux(param));
@@ -32,15 +33,15 @@ function App() {
         <Routes>
           <Route
             path={'/main'}
-            element={<Main action={setData}/>}
+            element={user.id ? <Main action={setData}/> : <Auth />}
           />
           <Route
             path={'/stat/:viewType'}
-            element={<Stat statData={data} computedData={computedData}/>}
+            element={user.id ? <Stat /> : <Auth />}
           />
           <Route
             path={'/user/'}
-            element={<User statData={data}/>}
+            element={<User />}
           />
           <Route
             path={'*'}

@@ -13,7 +13,7 @@ export const dataReducer = createSlice({
         setData: (state, action) => {
             state.all.push(action.payload);
 
-            const {viewType, viewValue, viewComment} = action.payload;
+            const {viewType, viewValue, viewComment, userId} = action.payload;
 
             if(viewType === 'income') {
                 return;
@@ -24,6 +24,7 @@ export const dataReducer = createSlice({
             if (index === -1) {
                 const expense = expenseTypes.find(type => type.label === viewComment);
                 expense.value = viewValue;
+                expense.userId = userId;
                 
                 state.computed.push(expense);
             } else {

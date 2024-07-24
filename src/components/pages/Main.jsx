@@ -12,7 +12,7 @@ import setNotification from '../../helpers/notifications';
 import { getNameOfType } from '../../helpers/functions';
 import expenseTypes from '../../constants/expenseTypes';
 import mainTypes from '../../constants/mainTypes';
-import { selectTransactionType, selectTransactionValue, selectTransactionComment } from '../../redux-state/data/selectors';
+import { selectTransactionType, selectTransactionValue, selectTransactionComment, selectUser } from '../../redux-state/data/selectors';
 
 
 const { FormContainer, Button, Input } = css;
@@ -25,6 +25,7 @@ const Main = (props) => {
     const viewType = useSelector(selectTransactionType);
     const viewValue = useSelector(selectTransactionValue);
     const viewComment = useSelector(selectTransactionComment);
+    const user = useSelector(selectUser);
     
     const validation = () => {
         if (viewValue.length === 0) {
@@ -37,7 +38,7 @@ const Main = (props) => {
             return;
         } 
 
-        action({viewType:viewType, viewValue:+viewValue, viewComment:viewComment});
+        action({viewType:viewType, viewValue:+viewValue, viewComment:viewComment, userId:user.id});
         setNotification({message:`Добавлен ${getNameOfType(viewType)} ${viewComment} в размере ${viewValue} руб`, type:'success'});
 
         dispatch(changeValue({key:'value', value:''}));

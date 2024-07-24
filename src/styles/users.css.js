@@ -15,6 +15,13 @@ const css = {
         padding: 20px;
         border-radius: 10px;
         border: 1px solid gray;
+        cursor: pointer;
+        transition: background-color 0.3s, box-shadow 0.3s;
+
+        &:hover {
+            background-color: #f0f0f0;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
     `,
     Title: styled.b`
         font-weight: 600;

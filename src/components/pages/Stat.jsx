@@ -4,7 +4,6 @@ import DataList from '../views/local/DataList';
 import DataChart from '../views/local/DataChart';
 
 const Stat = (props) => {
-    const {statData, computedData} = props;
     const [isShowChart, setIsShowChart] = useState(true);
 
     const {viewType} = useParams();
@@ -12,7 +11,7 @@ const Stat = (props) => {
     return (
         <>
             <DataList setShow={setIsShowChart} />
-            <DataChart viewType={viewType} show={isShowChart} data={computedData} />
+            <DataChart viewType={viewType} show={isShowChart} />
         </>
     )
 }

@@ -8,13 +8,22 @@ export const selectAllData = state => state.data.all;
 export const selectComputedData = state => state.data.computed;
 export const selectActiveType = state => state.type;
 
-export const selectDataByType = createSelector(
-    [selectAllData, selectActiveType],
-    (data, activeType) => activeType == 'all' ? data : data.filter(item => item.viewType === activeType)
+export const selectUsers = state => state.user;
+export const selectUser = state => state.user.choosed;
+
+export const selectDataByFilter = createSelector(
+    [selectAllData, selectActiveType, selectUser],
+    (data, activeType, user) => {
+        if(user && user.id && user.id !== 999) {
+           data = data.filter(item => item.userId === user.id);
+        }
+        
+        return activeType == 'all' ? data : data.filter(item => item.viewType === activeType);
+    }
 );
 
 export const selectDataSum = createSelector(
-    [selectDataByType, selectActiveType],
+    [selectDataByFilter, selectActiveType],
     (data, activeType) => {
         let result = [];
 
@@ -36,7 +45,17 @@ export const selectDataSum = createSelector(
     }
 );
 
-export const selectUsers = state => state.user;
+export const selectComputedDataByFilter = createSelector(
+    [selectComputedData, selectUser],
+    (data, user) => {
+        if(user && user.id && user.id !== 999) {
+           data = data.filter(item => item.userId === user.id);
+        }
+        
+        return data;
+    }
+);
+
 
 // export const selectDataByType2 = createSelector(
 //     [selectAllData, selectActiveType],
