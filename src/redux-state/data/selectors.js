@@ -23,10 +23,9 @@ export const selectDataByFilter = createSelector(
 );
 
 export const selectDataSum = createSelector(
-    [selectDataByFilter, selectActiveType],
+    [selectDataByFilter, selectActiveType,],
     (data, activeType) => {
         let result = [];
-
         if (activeType === 'all') {
             result = data.reduce((sum, item) => {
                 if (item.viewType === 'income') {
@@ -40,6 +39,27 @@ export const selectDataSum = createSelector(
                 return sum + +item.viewValue;
             }, 0);
         }
+       
+        return result;
+    }
+);
+
+export const selectDataSumByUser = createSelector(
+    [selectAllData, (_, userId = null) => userId],
+    (data, userId = null) => {
+        let result = [];
+
+        if(userId) {
+            data = data.filter(item => item.userId === userId);
+        }
+        
+        result = data.reduce((sum, item) => {
+            if (item.viewType === 'income') {
+                return {...sum, income:sum.income + +item.viewValue}
+            } else {
+                return {...sum, expense:sum.expense + +item.viewValue}
+            }  
+        }, {income:0,expense:0});
        
         return result;
     }

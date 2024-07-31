@@ -48,6 +48,8 @@ const css = {
     },
     Container: styled.div`
         min-height: calc(100vh - 160px);
+        display: grid;
+        padding: 20px;
     `,
     Wrapper: styled.div`
         display: flex;

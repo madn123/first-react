@@ -5,7 +5,8 @@ import css from '../../../styles/dataList.css';
 import mainTypes from '../../../constants/mainTypes';
 import {getNameOfType, getColor} from '../../../helpers/functions';
 import { changeType } from '../../../redux-state/data/typeSlice';
-import { selectDataByFilter, selectDataSum, selectActiveType, selectUsers  } from '../../../redux-state/data/selectors';
+import { selectDataByFilter, selectDataSum, selectActiveType } from '../../../redux-state/data/selectors';
+import { useQuery } from '@redux-requests/react';
 
 const {DataContainer, ContentLine, ContentCell, ButtonsLine, ButtonItem} = css;
 
@@ -13,13 +14,12 @@ const DataList = (props) => {
     const {setShow} = props;
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    // const {filterData, filterDataSum} = useSelector(selectSum(viewType));
 
     const viewType = useSelector(selectActiveType);
     const filterData = useSelector(selectDataByFilter);
     const filterDataSum = useSelector(selectDataSum);
 
-    const userState = useSelector(selectUsers);
+    const { data, error, loading, pristine } = useQuery({ type: 'FETCH_USERS' });
     
     const handleCLick = (type) => {
         navigate('/stat/' + type);
@@ -28,7 +28,7 @@ const DataList = (props) => {
     }
 
     const getUserName = (userId) => {
-        const user = userState.users.find(user => user.id === userId);
+        const user = data.find(user => user.id === userId);
         return user ? user.name : 'Неизвестный пользователь';
     }
 

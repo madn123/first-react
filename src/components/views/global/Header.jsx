@@ -27,7 +27,7 @@ const Header = () => {
                 <HeaderCSS.Logo><IoLogoOctocat /> Finnmanager</HeaderCSS.Logo>
                 <HeaderCSS.MenuContainer>
                     <HOCButtonComponent 
-                        text={'/main'}
+                        text={'/'}
                     >
                         Добавить транзакцию
                     </HOCButtonComponent>
@@ -45,7 +45,7 @@ const Header = () => {
                     </HOCButtonComponent>
                 </HeaderCSS.MenuContainer>
                 <HeaderCSS.PersonalContainer>
-                    <FaUserAstronaut fontSize={'32px'} /> {user.name ? user.name : 'Выберите пользователя'} {user.name && <RiLogoutBoxRFill onClick={() => handleClick()} />}
+                    <FaUserAstronaut fontSize={'32px'} /> {user.name ? user.name : 'Требуется авторизация'} {user.name && <RiLogoutBoxRFill onClick={() => handleClick()} />}
                 </HeaderCSS.PersonalContainer>
             </HeaderContainer>
         </>

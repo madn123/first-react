@@ -32,7 +32,7 @@ function App() {
       <Container>
         <Routes>
           <Route
-            path={'/main'}
+            path={'/'}
             element={user.id ? <Main action={setData}/> : <Auth />}
           />
           <Route
@@ -41,12 +41,12 @@ function App() {
           />
           <Route
             path={'/user/'}
-            element={<User />}
+            element={user.id ? <User /> : <Auth />}
           />
-          <Route
+          {/* <Route
             path={'*'}
             element={<Main action={setData}/>}
-          />
+          /> */}
         </Routes>
       </Container>
 
