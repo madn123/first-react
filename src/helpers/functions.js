@@ -21,4 +21,23 @@ const getColor = (viewType, filterDataSum = 0) => {
     return 'gray';
 };
 
-export {getNameOfType, getColor}
+const findIndexInObj = (type, arrayObjects, targetObject) => {
+    // userId, viewComment, viewType, viewValue
+    // label = viewComment, value = viewValue, userId = userId
+
+    if (type === 'all') {
+        return arrayObjects.findIndex(obj => {
+            return obj.userId === targetObject.userId && obj.viewComment === targetObject.viewComment && obj.viewValue === targetObject.viewValue
+        });
+    }
+
+    if (type === 'computed') {
+        return arrayObjects.findIndex(obj => {
+            return obj.userId === targetObject.userId && obj.label === targetObject.viewComment && obj.value === targetObject.viewValue
+        });
+    }
+    
+    return -1;
+}
+
+export {getNameOfType, getColor, findIndexInObj}

@@ -13,7 +13,7 @@ import Avatar from '@mui/material/Avatar';
 import MoneyOffIcon from '@mui/icons-material/MoneyOff';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { fetchPhoto } from '../../../redux-state/data/actions';
-import store from '../../../redux-state/store';
+import {store} from '../../../redux-state/store';
 import axios from 'axios';
 
 const UserCard = ({user}) => {
@@ -32,9 +32,8 @@ const UserCard = ({user}) => {
             if (response.data.length) {
                 setPhoto(response.data[0]);
             }
-            console.log("🚀 ~ axios.get ~ data.data[0]:", response.data[0]);
+            // console.log("🚀 ~ axios.get ~ data.data[0]:", response.data[0]);
         });
-            
     }, []);
 
     const userSum = useSelector((state) => selectDataSumByUser(state, user.id));
@@ -45,8 +44,16 @@ const UserCard = ({user}) => {
         })
     }
 
+    const getUserAddress = (address) => {
+        const { geo, ...obj } = address;
+        
+        return Object.entries(obj)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join(', ');
+    }
+
     return (
-        <Card sx={{ maxWidth: 345 }} onClick={() => customClick()}>
+        <Card sx={{ maxWidth: 345, height: '100%' }} onClick={() => customClick()}>
             <CardMedia
                 sx={{ height: 140 }}
                 image={photo.url}
@@ -54,7 +61,7 @@ const UserCard = ({user}) => {
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">{user.name}</Typography>
-                <Typography variant="body2" color="text.secondary" sx={{marginBottom: '10px'}}>{Object.values(user.address).join(', ')}</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{marginBottom: '10px'}}>{getUserAddress(user.address)}</Typography>
                 <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                     <ListItem>
                         <ListItemAvatar>
@@ -62,7 +69,7 @@ const UserCard = ({user}) => {
                                 <AttachMoneyIcon />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary="Доходы" secondary={userSum.expense} />
+                        <ListItemText primary="Доходы" secondary={userSum.income} />
                     </ListItem>
                     <ListItem>
                         <ListItemAvatar>

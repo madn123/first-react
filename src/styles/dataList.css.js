@@ -7,7 +7,7 @@ const css = {
         align-items: center;
         justify-content: flex-start;
         position: relative;
-        width: 800px;
+        width: 100%;
         height: auto;
         border-radius: 8px;
         box-shadow: 0 0 3px grey;

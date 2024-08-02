@@ -18,7 +18,7 @@ export const selectDataByFilter = createSelector(
            data = data.filter(item => item.userId === user.id);
         }
         
-        return activeType == 'all' ? data : data.filter(item => item.viewType === activeType);
+        return activeType === 'all' ? data : data.filter(item => item.viewType === activeType);
     }
 );
 

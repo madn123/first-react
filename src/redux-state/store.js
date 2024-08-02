@@ -7,12 +7,19 @@ import dataReducer from './data/dataSlice';
 import typeReducer from './data/typeSlice';
 import userReducer from './data/userSlice';
 import { fetchUsers } from './data/actions';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 const { requestsReducer, requestsMiddleware } = handleRequests({
   driver: createDriver(axios.create({
     baseURL: 'https://jsonplaceholder.typicode.com',
   }),),
 });
+
+const persistConfig = {
+  key: 'root',
+  storage,
+}
 
 const rootReducer = combineReducers({
   requests: requestsReducer,
@@ -22,14 +29,18 @@ const rootReducer = combineReducers({
   user: userReducer,
 });
 
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(...requestsMiddleware),
 });
 
+const persistor = persistStore(store);
+
 store.dispatch(fetchUsers());
 
-export default store;
+export {persistor, store}
 
 // https://redux-requests.klisiczynski.com/docs/introduction/basic-usage
